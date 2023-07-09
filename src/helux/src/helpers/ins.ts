@@ -3,13 +3,21 @@ import { NOT_MOUNT, RENDER_END, RENDER_START, EXPIRE_MS } from '../consts';
 import { createOb } from './obj';
 import * as depApi from '../helpers/fndep';
 import { getInternal, getRawState } from '../helpers/state';
+import { getHeluxRoot } from '../factory/root';
 import { warn } from '../utils';
 import { clearDep } from './insdep';
 
-let insKeySeed = 0;
+function getScope() {
+  return getHeluxRoot().help.insDep;
+}
+
+const scope = getScope();
+
 export function getInsKey() {
-  insKeySeed = insKeySeed === Number.MAX_SAFE_INTEGER ? 1 : insKeySeed + 1;
-  return insKeySeed;
+  let keySeed = scope.keySeed;
+  keySeed = keySeed === Number.MAX_SAFE_INTEGER ? 1 : keySeed + 1;
+  scope.keySeed = keySeed;
+  return keySeed;
 }
 
 export function runInsUpdater(insCtx: IInsCtx | undefined, partialState: Dict) {

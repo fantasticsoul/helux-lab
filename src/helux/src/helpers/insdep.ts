@@ -1,9 +1,11 @@
 import type { IInsCtx } from '../typing';
 import { getHeluxRoot } from '../factory/root';
-import { getUnmountInfoMap } from './state';
 
-const UNMOUNT_INFO_MAP = getUnmountInfoMap();
-getHeluxRoot().help.insDep = { UNMOUNT_INFO_MAP };
+function getScope() {
+  return getHeluxRoot().help.insDep;
+}
+
+const { UNMOUNT_INFO_MAP } = getScope();
 
 /**
  * recover dep

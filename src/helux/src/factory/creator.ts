@@ -113,8 +113,6 @@ function getSharedState(heluxParams: IHeluxParams, options: ICreateOptions) {
   return sharedState;
 }
 
-const strategy = 1;
-
 function bindInternalToShared(sharedState: Dict, heluxParams: IHeluxParams) {
   const { heluxObj, rawState, shouldSync } = heluxParams;
   const insCtxMap = new Map<number, IInsCtx>();

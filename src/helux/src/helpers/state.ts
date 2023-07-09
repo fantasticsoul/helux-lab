@@ -1,10 +1,13 @@
 import { SHARED_KEY } from '../consts';
-import { Dict, IUnmountInfo } from '../typing';
+import { Dict } from '../typing';
+import { getHeluxRoot } from '../factory/root';
 import { isObj } from '../utils';
 
-const UNMOUNT_INFO_MAP = new Map<number, IUnmountInfo>();
-const SHARED_KEY_STATE_MAP = new Map<number, Dict>();
-const INTERMAL_MAP: Dict = {};
+function getScope() {
+  return getHeluxRoot().help.shared;
+}
+
+const { UNMOUNT_INFO_MAP, SHARED_KEY_STATE_MAP, INTERMAL_MAP } = getScope();
 
 export function getInternalMap() {
   return INTERMAL_MAP;
@@ -47,4 +50,15 @@ export function mapSharedState(sharedKey: number, state: Dict) {
 
 export function getSharedState(sharedKey: number) {
   return SHARED_KEY_STATE_MAP.get(sharedKey);
+}
+
+export function record(moduleName: string, sharedState: Dict) {
+  const { rootState, help } = getHeluxRoot();
+  const treeKey = moduleName || getSharedKey(sharedState);
+  if (rootState[treeKey] && !window.location.port) {
+    return console.error(`moduleName ${moduleName} duplicate!`);
+  }
+  // may hot replace for dev mode or add new mod
+  rootState[treeKey] = sharedState;
+  help.mod[treeKey] = { setState: getInternal(sharedState).setState };
 }
