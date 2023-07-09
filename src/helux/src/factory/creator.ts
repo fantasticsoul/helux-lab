@@ -1,11 +1,9 @@
-import { bindInternal, getInternal, getSharedKey, mapSharedState, markSharedKey } from '../helpers/state';
+import { bindInternal, getInternal, getSharedKey, mapSharedState, markSharedKey, record } from '../helpers/state';
 import { createHeluxObj, createOb, injectHeluxProto } from '../helpers/obj';
 import * as depApi from '../helpers/fndep';
 import { runInsUpdater } from '../helpers/ins';
 import type { Dict, DictN, EenableReactive, ICreateOptions, ICreateOptionsFull, IInsCtx, ModuleName } from '../typing';
 import { nodupPush, safeGet, dedupList } from '../utils';
-import { record } from './root';
-
 
 interface IHeluxParams {
   heluxObj: Dict;
